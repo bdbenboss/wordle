@@ -5,6 +5,8 @@ const tileDisplay = document.querySelector('.tile-container');
 const keyboard = document.querySelector('.key-container');
 //console.log(keyboard)
 
+// 3 j'ajoute un mot à Wordle à deviner
+const wordle = 'SUPER'
 
 const keys = [
   "Q",
@@ -47,6 +49,10 @@ const guessRows = [
   ['', '', '', '', ''],
 ]
 
+// 3.2 je met à deffault la position de la row et de la tile
+let currentRow = 0
+let currentTile = 0
+
 //2.1 je fais une itération sur la premiere array
 guessRows.forEach((guessRow, guessRowIndex) => {
   //2.2 je cree la balise div et la met dans une variable guessRows
@@ -75,10 +81,7 @@ guessRows.forEach((guessRow, guessRowIndex) => {
 
 
 // 1 LE BUT EST DE CREER UN CLAVIER POUR L UTILISATEUR
-// 1-7 Methode pour afficher les clicks sur la console
-const handleClick = () => {
-  console.log('clicked')
-};
+
 
 
 // 1-1 Je fais une itération sur l'array keys pour selectionner chaque key
@@ -93,8 +96,14 @@ keys.forEach(key => {
   buttonElement.setAttribute('id', key);
   // console.log(buttonElement)
   // 1-5 Je met une balise d'écoute pour mettre en route les clicks
-  buttonElement.addEventListener('click', handleClick);
+  buttonElement.addEventListener('click', () => handleClick(key));
   // console.log(buttonElement)
   // 1-6 J'affiche le clavier
   keyboard.append(buttonElement);
 });
+
+// 1-7 Methode pour afficher les clicks sur la console
+// 3.1 j'associe les keys à handleClick
+const handleClick = (key) => {
+  console.log('clicked', key)
+};
