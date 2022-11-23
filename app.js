@@ -105,28 +105,39 @@ const handleClick = (letter) => {
   console.log('clicked', letter)
   //4.1 j'ajoute deux conditions pour le delete et le enter
   if (letter === '«') {
-    console.log('delete letter')
+    deleteLetter()
+    console.log('guessRows',guessRows)
     return
   }
   if (letter === 'ENTER') {
-    console.log('check row')
+    console.log('guessRows',guessRows)
     return
   }
   addLetter(letter)
+  console.log('guessRows',guessRows)
 }
 
 // 3.2 je creer la methode addLetter pour ajouter une lettre à la tuile par default
 const addLetter = (letter) => {
   // 4.2 j ajoute la condition pour arreter l'ajout de lettre au bout de la ligne
   if (currentTile < 5 && currentRow < 6) {
-      const tile = document.getElementById('guessRow-' + currentRow + '-tile-' + currentTile)
-      tile.textContent = letter
-      //3.2.1 Je change de tuile à chaque clique sur une lettre
-      guessRows[currentRow][currentTile] = letter
-      // 3.3 j'attribue à la tile un attribut pour pouvoir changer de couleur dans le futur
-      tile.setAttribute('data', letter)
-      currentTile++
-      console.log('guessRows',guessRows)
+    const tile = document.getElementById('guessRow-' + currentRow + '-tile-' + currentTile)
+    tile.textContent = letter
+    //3.2.1 Je change de tuile à chaque clique sur une lettre
+    guessRows[currentRow][currentTile] = letter
+    // 3.3 j'attribue à la tile un attribut pour pouvoir changer de couleur dans le futur
+    tile.setAttribute('data', letter)
+    currentTile++
   }
+}
 
+// 5 Je cree la fonction delete
+const deleteLetter = () => {
+  if (currentTile > 0) {
+    currentTile--
+    const tile = document.getElementById('guessRow-' + currentRow + '-tile-' + currentTile)
+    tile.textContent = ''
+    guessRows[currentRow][currentTile] = ''
+    tile.setAttribute('data', '')
+  }
 }
