@@ -37,7 +37,7 @@ const keys = [
   "«",
 ];
 
-// 2 JE CREE UN TABLEAU POUR INSERER MES KEYS
+// 2 JE CREE UN ARRAY POUR INSERER MES KEYS
 const guessRows = [
   ['', '', '', '', ''],
   ['', '', '', '', ''],
@@ -60,14 +60,15 @@ guessRows.forEach((guessRow, guessRowIndex) => {
     //2.5 je cree un tag div et le met en variable tileElement
     const tileElement = document.createElement('div')
     //console.log(tileElement)
-    //2.6j'attribue l'id, l'index de guessrow et l'index de guess
+    //2.6 j'attribue l'id, l'index de guessrow et l'index de guess
     tileElement.setAttribute('id', 'guessRow-' + guessRowIndex + '-tile-' + guessIndex)
     //console.log(tileElement)
-    // j ajoute tileElement à rowElement
+    tileElement.classList.add('tile')
+    //2.7 j ajoute tileElement à rowElement
     rowElement.append(tileElement)
     // console.log(rowElement)
   })
-  // j ajoute les rowElement à tileDisplay
+  // 2.3.1 j ajoute les rowElement à tileDisplay
   tileDisplay.append(rowElement)
 })
 //console.log(guessRows)
