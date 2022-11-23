@@ -1,10 +1,12 @@
 // Je selectionne mon tile container et je lui donne comme variable tileDisplay
-const tileDisplay = document.querySelector('.tile-container');
+const tileDisplay = document.querySelector('.tile-container')
 //console.log(tileDisplay)
 // Je selectionne mon key container et je lui donne comme variable keyboard
-const keyboard = document.querySelector('.key-container');
+const keyboard = document.querySelector('.key-container')
 //console.log(keyboard)
 
+// 3 j'ajoute un mot à Wordle à deviner
+const wordle = 'SUPER'
 
 const keys = [
   "Q",
@@ -37,7 +39,7 @@ const keys = [
   "«",
 ];
 
-// 2 JE CREE UN TABLEAU POUR INSERER MES KEYS
+// 2 JE CREE UN ARRAY POUR INSERER MES KEYS
 const guessRows = [
   ['', '', '', '', ''],
   ['', '', '', '', ''],
@@ -46,6 +48,10 @@ const guessRows = [
   ['', '', '', '', ''],
   ['', '', '', '', ''],
 ]
+
+// 3.2 je met à deffault la position de la row et de la tile
+let currentRow = 0
+let currentTile = 0
 
 //2.1 je fais une itération sur la premiere array
 guessRows.forEach((guessRow, guessRowIndex) => {
@@ -60,40 +66,78 @@ guessRows.forEach((guessRow, guessRowIndex) => {
     //2.5 je cree un tag div et le met en variable tileElement
     const tileElement = document.createElement('div')
     //console.log(tileElement)
-    //2.6j'attribue l'id, l'index de guessrow et l'index de guess
+    //2.6 j'attribue l'id, l'index de guessrow et l'index de guess
     tileElement.setAttribute('id', 'guessRow-' + guessRowIndex + '-tile-' + guessIndex)
     //console.log(tileElement)
-    // j ajoute tileElement à rowElement
+    tileElement.classList.add('tile')
+    //2.7 j ajoute tileElement à rowElement
     rowElement.append(tileElement)
     // console.log(rowElement)
   })
-  // j ajoute les rowElement à tileDisplay
+  // 2.3.1 j ajoute les rowElement à tileDisplay
   tileDisplay.append(rowElement)
 })
 //console.log(guessRows)
 
-
 // 1 LE BUT EST DE CREER UN CLAVIER POUR L UTILISATEUR
-// 1-7 Methode pour afficher les clicks sur la console
-const handleClick = () => {
-  console.log('clicked')
-};
-
 
 // 1-1 Je fais une itération sur l'array keys pour selectionner chaque key
 keys.forEach(key => {
   // 1-2 Je create un tag button en js et le met dans la variable buttonElement
-  const buttonElement = document.createElement('button');
+  const buttonElement = document.createElement('button')
   // console.log(buttonElement)
   // 1-3 On affecte une key à chaque bouton
-  buttonElement.textContent = key;
+  buttonElement.textContent = key
   // console.log(buttonElement)
   // 1-4 On attribut un id pour chaque bouton en l'appelant par le nom de la key
-  buttonElement.setAttribute('id', key);
+  buttonElement.setAttribute('id', key)
   // console.log(buttonElement)
   // 1-5 Je met une balise d'écoute pour mettre en route les clicks
-  buttonElement.addEventListener('click', handleClick);
+  buttonElement.addEventListener('click', () => handleClick(key))
   // console.log(buttonElement)
   // 1-6 J'affiche le clavier
-  keyboard.append(buttonElement);
-});
+  keyboard.append(buttonElement)
+})
+
+// 1-7 Methode pour afficher les clicks sur la console
+// 3.1 j'associe les letters à handleClick
+const handleClick = (letter) => {
+  console.log('clicked', letter)
+  //4.1 j'ajoute deux conditions pour le delete et le enter
+  if (letter === '«') {
+    deleteLetter()
+    console.log('guessRows',guessRows)
+    return
+  }
+  if (letter === 'ENTER') {
+    console.log('guessRows',guessRows)
+    return
+  }
+  addLetter(letter)
+  console.log('guessRows',guessRows)
+}
+
+// 3.2 je creer la methode addLetter pour ajouter une lettre à la tuile par default
+const addLetter = (letter) => {
+  // 4.2 j ajoute la condition pour arreter l'ajout de lettre au bout de la ligne
+  if (currentTile < 5 && currentRow < 6) {
+    const tile = document.getElementById('guessRow-' + currentRow + '-tile-' + currentTile)
+    tile.textContent = letter
+    //3.2.1 Je change de tuile à chaque clique sur une lettre
+    guessRows[currentRow][currentTile] = letter
+    // 3.3 j'attribue à la tile un attribut pour pouvoir changer de couleur dans le futur
+    tile.setAttribute('data', letter)
+    currentTile++
+  }
+}
+
+// 5 Je cree la fonction delete
+const deleteLetter = () => {
+  if (currentTile > 0) {
+    currentTile--
+    const tile = document.getElementById('guessRow-' + currentRow + '-tile-' + currentTile)
+    tile.textContent = ''
+    guessRows[currentRow][currentTile] = ''
+    tile.setAttribute('data', '')
+  }
+}
