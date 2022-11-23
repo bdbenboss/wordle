@@ -103,17 +103,30 @@ keys.forEach(key => {
 // 3.1 j'associe les letters à handleClick
 const handleClick = (letter) => {
   console.log('clicked', letter)
+  //4.1 j'ajoute deux conditions pour le delete et le enter
+  if (letter === '«') {
+    console.log('delete letter')
+    return
+  }
+  if (letter === 'ENTER') {
+    console.log('check row')
+    return
+  }
   addLetter(letter)
 }
 
 // 3.2 je creer la methode addLetter pour ajouter une lettre à la tuile par default
 const addLetter = (letter) => {
-  const tile = document.getElementById('guessRow-' + currentRow + '-tile-' + currentTile)
-  tile.textContent = letter
-  //3.2.1 Je change de tuile à chaque clique sur une lettre
-  guessRows[currentRow][currentTile] = letter
-  // 3.3 j'attribue à la tile un attribut pour pouvoir changer de couleur dans le futur
-  tile.setAttribute('data', letter)
-  currentTile++
-  console.log('guessRows',guessRows)
+  // 4.2 j ajoute la condition pour arreter l'ajout de lettre au bout de la ligne
+  if (currentTile < 5 && currentRow < 6) {
+      const tile = document.getElementById('guessRow-' + currentRow + '-tile-' + currentTile)
+      tile.textContent = letter
+      //3.2.1 Je change de tuile à chaque clique sur une lettre
+      guessRows[currentRow][currentTile] = letter
+      // 3.3 j'attribue à la tile un attribut pour pouvoir changer de couleur dans le futur
+      tile.setAttribute('data', letter)
+      currentTile++
+      console.log('guessRows',guessRows)
+  }
+
 }
