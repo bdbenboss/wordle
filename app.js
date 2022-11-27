@@ -4,6 +4,9 @@ const tileDisplay = document.querySelector('.tile-container')
 // Je selectionne mon key container et je lui donne comme variable keyboard
 const keyboard = document.querySelector('.key-container')
 //console.log(keyboard)
+// 7.3 je selectionne mon message container et je lui donne comme variable messageDisplay
+const messageDisplay = document.querySelector('.message-container')
+
 
 // 3 j'ajoute un mot à Wordle à deviner
 const wordle = 'SUPER'
@@ -144,9 +147,21 @@ const deleteLetter = () => {
 }
 
 // 6 Je cree la fonction pour valider la ligne
+// 7.1 je compare la guess avec le wordle
 const checkRow = () => {
+  const guess = guessRows[currentRow].join('')
   if (currentTile === 5) {
-    const guess = guessRows[currentRow].join('')
     console.log('guess is ' + guess, 'worlde is ' + wordle)
+    if (wordle == guess) {
+      showMessage('Magnificent!')
+    }
   }
+}
+
+// 7.2 Je cree la methode pour afficher le message
+const showMessage = (message) => {
+  const messageElement = document.createElement('p')
+  messageElement.textContent = message
+  messageDisplay.append(messageElement)
+  setTimeout(() => messageDisplay.removeChild(messageElement), 2000)
 }
