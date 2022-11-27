@@ -4,6 +4,9 @@ const tileDisplay = document.querySelector('.tile-container')
 // Je selectionne mon key container et je lui donne comme variable keyboard
 const keyboard = document.querySelector('.key-container')
 //console.log(keyboard)
+// 7.3 je selectionne mon message container et je lui donne comme variable messageDisplay
+const messageDisplay = document.querySelector('.message-container')
+
 
 // 3 j'ajoute un mot à Wordle à deviner
 const wordle = 'SUPER'
@@ -52,6 +55,7 @@ const guessRows = [
 // 3.2 je met à deffault la position de la row et de la tile
 let currentRow = 0
 let currentTile = 0
+let isGameOver = false
 
 //2.1 je fais une itération sur la premiere array
 guessRows.forEach((guessRow, guessRowIndex) => {
@@ -110,6 +114,7 @@ const handleClick = (letter) => {
     return
   }
   if (letter === 'ENTER') {
+    checkRow()
     console.log('guessRows',guessRows)
     return
   }
@@ -140,4 +145,38 @@ const deleteLetter = () => {
     guessRows[currentRow][currentTile] = ''
     tile.setAttribute('data', '')
   }
+}
+
+// 6 Je cree la fonction pour valider la ligne
+// 7.1 je compare la guess avec le wordle
+// 7.2 j'affiche le message Magnificent
+// 7.3 j'a
+const checkRow = () => {
+  const guess = guessRows[currentRow].join('')
+  if (currentTile === 5) {
+    console.log('guess is ' + guess, 'worlde is ' + wordle)
+    if (wordle == guess) {
+      showMessage('Magnificent!')
+      isGameOver = true
+      return
+    } else {
+      if (currentRow >= 5) {
+        isGameOver = false
+        showMessage('Game Over')
+        return
+      }
+      if (currentRow < 5) {
+        currentRow++
+        currentTile = 0
+      }
+    }
+  }
+}
+
+// 7.2 Je cree la methode pour afficher le message
+const showMessage = (message) => {
+  const messageElement = document.createElement('p')
+  messageElement.textContent = message
+  messageDisplay.append(messageElement)
+  setTimeout(() => messageDisplay.removeChild(messageElement), 2000)
 }
