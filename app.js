@@ -150,7 +150,7 @@ const deleteLetter = () => {
 // 6 Je cree la fonction pour valider la ligne
 // 7.1 je compare la guess avec le wordle
 // 7.2 j'affiche le message Magnificent
-// 7.3 j'a
+// 7.3 j'affiche le message Game over
 const checkRow = () => {
   const guess = guessRows[currentRow].join('')
   if (currentTile === 5) {
