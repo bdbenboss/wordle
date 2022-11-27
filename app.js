@@ -55,6 +55,7 @@ const guessRows = [
 // 3.2 je met à deffault la position de la row et de la tile
 let currentRow = 0
 let currentTile = 0
+let isGameOver = false
 
 //2.1 je fais une itération sur la premiere array
 guessRows.forEach((guessRow, guessRowIndex) => {
@@ -148,12 +149,26 @@ const deleteLetter = () => {
 
 // 6 Je cree la fonction pour valider la ligne
 // 7.1 je compare la guess avec le wordle
+// 7.2 j'affiche le message Magnificent
+// 7.3 j'a
 const checkRow = () => {
   const guess = guessRows[currentRow].join('')
   if (currentTile === 5) {
     console.log('guess is ' + guess, 'worlde is ' + wordle)
     if (wordle == guess) {
       showMessage('Magnificent!')
+      isGameOver = true
+      return
+    } else {
+      if (currentRow >= 5) {
+        isGameOver = false
+        showMessage('Game Over')
+        return
+      }
+      if (currentRow < 5) {
+        currentRow++
+        currentTile = 0
+      }
     }
   }
 }
