@@ -110,6 +110,7 @@ const handleClick = (letter) => {
     return
   }
   if (letter === 'ENTER') {
+    checkRow()
     console.log('guessRows',guessRows)
     return
   }
@@ -139,5 +140,13 @@ const deleteLetter = () => {
     tile.textContent = ''
     guessRows[currentRow][currentTile] = ''
     tile.setAttribute('data', '')
+  }
+}
+
+// 6 Je cree la fonction pour valider la ligne
+const checkRow = () => {
+  if (currentTile === 5) {
+    const guess = guessRows[currentRow].join('')
+    console.log('guess is ' + guess, 'worlde is ' + wordle)
   }
 }
