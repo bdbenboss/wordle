@@ -153,8 +153,10 @@ const deleteLetter = () => {
 // 7.3 j'affiche le message Game over
 const checkRow = () => {
   const guess = guessRows[currentRow].join('')
+
   if (currentTile === 5) {
     console.log('guess is ' + guess, 'worlde is ' + wordle)
+    flipTile()
     if (wordle == guess) {
       showMessage('Magnificent!')
       isGameOver = true
@@ -180,3 +182,29 @@ const showMessage = (message) => {
   messageDisplay.append(messageElement)
   setTimeout(() => messageDisplay.removeChild(messageElement), 2000)
 }
+
+// 8 Je cree une fonction pour ajouter les couleurs
+const flipTile = () => {
+  // 8.1 Je selectionne les enfants des rows et lui donne comme variable rowTiles
+  const rowTiles = document.querySelector('#guessRow-' + currentRow).childNodes
+  // 8.2 Pour chaque Tile j'attribue un data
+  rowTiles.forEach((tile, index) => {
+    const dataLetter = tile.getAttribute('data')
+
+    // 8.3 Si le dataLetter est égal à l'index du wordle
+    // je met la tuile verte
+    console.log('lalalalalalalala', wordle)
+    console.log('lolololololololo', dataLetter)
+    if (dataLetter == wordle[index]) {
+      tile.classList.add('green-overlay')
+      //  Si le dataLetter est inclus dans le wordle
+      // je met la tuile jaune
+    } else if (wordle.includes(dataLetter)) {
+      tile.classList.add('yellow-overlay')
+      // Sinon il est gris
+    } else {
+      tile.classList.add('grey-overlay')
+    }
+  })
+}
+// 8.4 j'ajoute la fonction dans la méthode checkRow
