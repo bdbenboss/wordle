@@ -9,7 +9,18 @@ const messageDisplay = document.querySelector('.message-container')
 
 
 // 3 j'ajoute un mot à Wordle à deviner
-const wordle = 'SUPER'
+let wordle
+
+const getWordle = () => {
+  fetch('http://localhost:8000/word')
+    .then(response => response.json())
+    .then(json => {
+      console.log(json)
+      worlde = json.toUpperCase()
+    })
+    .catch(err => console.log(err))
+}
+getWordle()
 
 const keys = [
   "Q",
@@ -150,11 +161,13 @@ const deleteLetter = () => {
 // 6 Je cree la fonction pour valider la ligne
 // 7.1 je compare la guess avec le wordle
 // 7.2 j'affiche le message Magnificent
-// 7.3 j'a
+// 7.3 j'affiche le message Game over
 const checkRow = () => {
   const guess = guessRows[currentRow].join('')
+
   if (currentTile === 5) {
     console.log('guess is ' + guess, 'worlde is ' + wordle)
+    flipTile()
     if (wordle == guess) {
       showMessage('Magnificent!')
       isGameOver = true
@@ -179,4 +192,44 @@ const showMessage = (message) => {
   messageElement.textContent = message
   messageDisplay.append(messageElement)
   setTimeout(() => messageDisplay.removeChild(messageElement), 2000)
+}
+
+// 9 Je cree une fonction pour ajouter les couleurs des keys du keyboard
+const addColorToKey =(keyLetter, color) => {
+  const key = document.getElementById(keyLetter)
+  key.classList.add(color)
+}
+
+
+const flipTile = () => {
+  const rowTiles = document.querySelector('#guessRow-' + currentRow).childNodes
+  let checkWordle = wordle
+  const guess = []
+
+  rowTiles.forEach(tile => {
+    guess.push({ letter: tile.getAttribute('data'), color: 'grey-overlay'})
+  })
+
+  guess.forEach((guess, index) => {
+    if (guess.letter == wordle[index]) {
+      guess.color = 'green-overlay'
+      checkWordle = checkWordle.replace(guess.letter, '')
+    }
+  })
+
+  guess.forEach(guess => {
+    if (checkWordle.includes(guess.letter)) {
+      guess.color = 'yellow-overlay'
+      checkWordle = checkWordle.replace(guess.letter, '')
+    }
+  })
+  console.log('guess', guess)
+
+  rowTiles.forEach((tile, index) => {
+    setTimeout(() => {
+      tile.classList.add('flip')
+      tile.classList.add(guess[index].color)
+      addColorToKey(guess[index].letter, guess[index].color)
+    }, 500 * index)
+  })
 }
