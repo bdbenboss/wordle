@@ -16,7 +16,7 @@ const getWordle = () => {
     .then(response => response.json())
     .then(json => {
       console.log(json)
-      worlde = json.toUpperCase()
+      wordle = json.toUpperCase()
     })
     .catch(err => console.log(err))
 }
