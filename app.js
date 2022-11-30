@@ -183,28 +183,42 @@ const showMessage = (message) => {
   setTimeout(() => messageDisplay.removeChild(messageElement), 2000)
 }
 
-// 8 Je cree une fonction pour ajouter les couleurs
-const flipTile = () => {
-  // 8.1 Je selectionne les enfants des rows et lui donne comme variable rowTiles
-  const rowTiles = document.querySelector('#guessRow-' + currentRow).childNodes
-  // 8.2 Pour chaque Tile j'attribue un data
-  rowTiles.forEach((tile, index) => {
-    const dataLetter = tile.getAttribute('data')
+// 9 Je cree une fonction pour ajouter les couleurs des keys du keyboard
+const addColorToKey =(keyLetter, color) => {
+  const key = document.getElementById(keyLetter)
+  key.classList.add(color)
+}
 
-    // 8.3 Si le dataLetter est égal à l'index du wordle
-    // je met la tuile verte
-    console.log('lalalalalalalala', wordle)
-    console.log('lolololololololo', dataLetter)
-    if (dataLetter == wordle[index]) {
-      tile.classList.add('green-overlay')
-      //  Si le dataLetter est inclus dans le wordle
-      // je met la tuile jaune
-    } else if (wordle.includes(dataLetter)) {
-      tile.classList.add('yellow-overlay')
-      // Sinon il est gris
-    } else {
-      tile.classList.add('grey-overlay')
+
+const flipTile = () => {
+  const rowTiles = document.querySelector('#guessRow-' + currentRow).childNodes
+  let checkWordle = wordle
+  const guess = []
+
+  rowTiles.forEach(tile => {
+    guess.push({ letter: tile.getAttribute('data'), color: 'grey-overlay'})
+  })
+
+  guess.forEach((guess, index) => {
+    if (guess.letter == wordle[index]) {
+      guess.color = 'green-overlay'
+      checkWordle = checkWordle.replace(guess.letter, '')
     }
   })
+
+  guess.forEach(guess => {
+    if (checkWordle.includes(guess.letter)) {
+      guess.color = 'yellow-overlay'
+      checkWordle = checkWordle.replace(guess.letter, '')
+    }
+  })
+  console.log('guess', guess)
+
+  rowTiles.forEach((tile, index) => {
+    setTimeout(() => {
+      tile.classList.add('flip')
+      tile.classList.add(guess[index].color)
+      addColorToKey(guess[index].letter, guess[index].color)
+    }, 500 * index)
+  })
 }
-// 8.4 j'ajoute la fonction dans la méthode checkRow
