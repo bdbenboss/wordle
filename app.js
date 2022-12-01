@@ -16,7 +16,7 @@ const getWordle = () => {
     .then(response => response.json())
     .then(json => {
       console.log(json)
-      worlde = json.toUpperCase()
+      wordle = json.toUpperCase()
     })
     .catch(err => console.log(err))
 }
@@ -117,20 +117,22 @@ keys.forEach(key => {
 // 1-7 Methode pour afficher les clicks sur la console
 // 3.1 j'associe les letters à handleClick
 const handleClick = (letter) => {
-  console.log('clicked', letter)
-  //4.1 j'ajoute deux conditions pour le delete et le enter
-  if (letter === '«') {
-    deleteLetter()
+  if (!isGameOver) {
+    console.log('clicked', letter)
+    //4.1 j'ajoute deux conditions pour le delete et le enter
+    if (letter === '«') {
+      deleteLetter()
+      console.log('guessRows',guessRows)
+      return
+    }
+    if (letter === 'ENTER') {
+      checkRow()
+      console.log('guessRows',guessRows)
+      return
+    }
+    addLetter(letter)
     console.log('guessRows',guessRows)
-    return
   }
-  if (letter === 'ENTER') {
-    checkRow()
-    console.log('guessRows',guessRows)
-    return
-  }
-  addLetter(letter)
-  console.log('guessRows',guessRows)
 }
 
 // 3.2 je creer la methode addLetter pour ajouter une lettre à la tuile par default
@@ -164,25 +166,35 @@ const deleteLetter = () => {
 // 7.3 j'affiche le message Game over
 const checkRow = () => {
   const guess = guessRows[currentRow].join('')
-
-  if (currentTile === 5) {
-    console.log('guess is ' + guess, 'worlde is ' + wordle)
-    flipTile()
-    if (wordle == guess) {
-      showMessage('Magnificent!')
-      isGameOver = true
-      return
-    } else {
-      if (currentRow >= 5) {
-        isGameOver = false
-        showMessage('Game Over')
-        return
-      }
-      if (currentRow < 5) {
-        currentRow++
-        currentTile = 0
-      }
-    }
+  console.log('guess', guess)
+  if (currentTile > 4) {
+    fetch('http://localhost:8000/check/?word=${guess}')
+      .then(response => response.json())
+      .then(json => {
+        console.log(json)
+        if (json == 'Entry word not found') {
+          showMessage('word not in list')
+          return
+        } else {
+          console.log('guess is ' + guess, 'worlde is ' + wordle)
+          flipTile()
+          if (wordle == guess) {
+            showMessage('Magnificent!')
+            isGameOver = true
+            return
+          } else {
+            if (currentRow >= 5) {
+              isGameOver = true
+              showMessage('Game Over')
+              return
+            }
+            if (currentRow < 5) {
+              currentRow++
+              currentTile = 0
+            }
+          }
+        }
+      }).catch(err => console.log(err))
   }
 }
 
